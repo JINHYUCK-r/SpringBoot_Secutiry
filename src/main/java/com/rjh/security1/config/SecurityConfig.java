@@ -20,13 +20,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests()
-			.antMatchers("/user/**").authenticated()
+			.antMatchers("/user/**").authenticated() //인증만 되면들어갈수있는 주소 
 			.antMatchers("/manager/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_MANAGER')")
 			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
-			.loginPage("/loginForm");
+			.loginPage("/loginForm")
+			.loginProcessingUrl("/login") // /login주소가 호출되면 시큐리티가 낚아채서 대신 로그인을 진행해줌. 컨트롤러에 /login을 만들필요가 없음
+			.defaultSuccessUrl("/"); // 기본이동주소는 / 이지만 특정 주소를 요청해서 로그인하게 되면 그 주소로 바로 이동시켜 줌 
 	}
 	
 }
