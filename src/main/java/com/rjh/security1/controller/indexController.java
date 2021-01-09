@@ -1,6 +1,8 @@
 package com.rjh.security1.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,5 +64,10 @@ public class indexController {
 		userRepository.save(user); //회원가입 . 비밀번호 보안이 안됨 => 시큐리티로 로그인을 할수없음. 패스워드 암호화가 안되어 있기 때문 
 		return "redirect:/loginForm";
 	}
-
+	
+	@Secured("ROLE_ADMIN") //SecurityConfig	에서 설정한 @EnableGlobalMethodSecurity  로 간단하게 설정할수 있음 
+	@GetMapping("/info")
+	public @ResponseBody String info() {
+		return "개인정보";
+	}
 }
