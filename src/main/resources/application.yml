@@ -41,4 +41,12 @@ spring:
             - email 
             - profile
             
+          facebook:
+            client-id: 2765111333727448
+            client-secret: a9a102f3d5766fb277929353a1cabeee
+            #scope는 제공해주는 이름 그대로 적어주어야함 
+            scope:
+            - email 
+            - public_profile
+            
               
