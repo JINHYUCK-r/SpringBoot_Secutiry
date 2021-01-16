@@ -1,5 +1,7 @@
 package com.rjh.security1.config.oauth;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.rjh.security1.config.auth.PrincipalDetails;
 import com.rjh.security1.config.oauth.provider.FacebookUserInfo;
 import com.rjh.security1.config.oauth.provider.GoogleUserInfo;
+import com.rjh.security1.config.oauth.provider.NaverUserInfo;
 import com.rjh.security1.config.oauth.provider.OAuth2UserInfo;
 import com.rjh.security1.model.User;
 import com.rjh.security1.repository.UserRepository;
@@ -47,8 +50,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 		}else if(userRequest.getClientRegistration().getRegistrationId().equals("facebook")) {
 			System.out.println("페이스북 로그인 요청");
 			oAuth2UserInfo = new FacebookUserInfo(oauth2User.getAttributes()); 
+		}else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")) {
+			System.out.println("네이버 로그인 요청");
+			oAuth2UserInfo = new NaverUserInfo((Map<String, Object>)oauth2User.getAttributes().get("response"));
+			//우리가 yml에서 response라고 등록한 attributes안의 response에 우리가 필요한 값이 있기때문에 이렇게받아와야한다. 
 		}else {
-			System.out.println("우리는 구글과 페이스북만 지원해요");
+			System.out.println("우리는 구글과 페이스북, 네이버만  지원해요");
 		}
 		/* 유저정보를 담는 클래스를 나누어서 만들지않고 구글만 했을 경우에는 이렇게받아도 된다.
 		String provider = userRequest.getClientRegistration().getRegistrationId(); // google
